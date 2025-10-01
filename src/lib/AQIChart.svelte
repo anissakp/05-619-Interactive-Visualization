@@ -27,7 +27,7 @@
 	const { data }: { data: Item[] } = $props();
 
 	// Step 7: In the background of the chart, show the AQI levels as color.
-	[
+	const aqiLevels = [
 		{ name: 'Good', min: 0, max: 50, color: '#9cd84e' },
 		{ name: 'Moderate', min: 51, max: 100, color: '#facf39' },
 		{ name: 'Unhealthy for Sensitive Groups', min: 101, max: 150, color: '#f99049' },
@@ -36,13 +36,52 @@
 		{ name: 'Hazardous', min: 301, color: '#a06a7b' }
 	];
 
+	// chart dimensions
+	// adopted from https://d3js.org/getting-started#d3-in-svelte 
+	const width = 800;
+	const height = 400;
+	const marginTop = 20;
+	const marginRight = 20;
+	const marginBottom = 30;
+	const marginLeft = 40;
+
+	// adopted from https://d3js.org/d3-scale/time
+	let x = d3.scaleTime()
+		.range([marginLeft, width - marginRight])
+		.domain(d3.extent(data, d => d.timestamp) as [Date, Date]);
+
+	// adopted from https://d3js.org/d3-scale/linear
+	let y = d3.scaleLinear()
+		.range([height - marginBottom, marginTop])
+		.domain([0, d3.max(data, d => d.usAqi) || 300]);
+
 	// just for debugging; can be removed
 	$inspect(data);
 </script>
 
-<pre>
+<!-- <pre>
 {JSON.stringify(data[0], null, 2)}
-</pre>
+</pre> -->
+
+<svg {width} {height}>
+	<!-- X-axis -->
+	<line 
+		x1={marginLeft} 
+		x2={width - marginRight} 
+		y1={height - marginBottom} 
+		y2={height - marginBottom} 
+		stroke="black" 
+	/>
+
+	<!-- Y-axis -->
+	<line 
+		x1={marginLeft} 
+		x2={marginLeft} 
+		y1={marginTop} 
+		y2={height - marginBottom} 
+		stroke="black" 
+	/>
+</svg>
 
 <style>
 	svg {
