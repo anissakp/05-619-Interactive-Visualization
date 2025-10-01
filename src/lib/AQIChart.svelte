@@ -43,6 +43,7 @@
 	let margin = $state({ top: 20, right: 20, bottom: 30, left: 40 });
 
 	// Step 1: Show the monthly average air quality (AQI) as a line.
+	// Step 2: Show the inner 80 percentiles (10% to 90%) as an area behind the line.
 	// group by month and calculate mean AQI
 	const monthlyData = $derived(
 		Array.from(
@@ -62,7 +63,11 @@
 			([date, stats]) => ({
 				// Step 6: Align the date with the 15th day of the month.
 				date: new Date(date.getFullYear(), date.getMonth(), 15),
-				stats
+				
+				...stats // the spread operator (from mdn documentation) copies the properties from one object into another
+				
+				// without operator it creates: { date: "2021-08-15", stats: { mean: 42, p10: 35, p90: 48 } }
+				// with operator it creates: { date: "2021-08-15", mean: 42, p10: 35, p90: 48 }
 			})
 		)
 	);
@@ -92,7 +97,7 @@
 	// create line 
 	// Step 1: Show the monthly average air quality (AQI) as a line. 
 	let line = $derived(
-		d3.line <{ date: Date; mean: number | undefined }>()
+		d3.line<{ date: Date; mean: number | undefined }>()
 			.x((d) => xScale(d.date))
 			.y((d) => yScale(d.mean ?? 0))
 	);
