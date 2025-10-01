@@ -5,6 +5,8 @@
 <!-- Step 4: If no station is selected, the chart should show the series for all stations. -->
 <!-- Step 5: Sort the station names by count. -->
 <!-- Step 6: Align the date with the 15th day of the month. -->
+<!-- Step 7: In the background of the chart, show the AQI levels as color. -->
+<!-- Step 8: Add a checkbox to toggle showing the raw data as points (time and AQI) on the chart. -->
 
 <script lang="ts">
 	import * as d3 from 'd3';
@@ -24,7 +26,7 @@
 	// properties this component accepts
 	const { data }: { data: Item[] } = $props();
 
-	// provided code for AQI levels
+	// Step 7: In the background of the chart, show the AQI levels as color.
 	[
 		{ name: 'Good', min: 0, max: 50, color: '#9cd84e' },
 		{ name: 'Moderate', min: 51, max: 100, color: '#facf39' },
