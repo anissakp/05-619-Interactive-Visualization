@@ -46,16 +46,23 @@
 	// group by month and calculate mean AQI
 	const monthlyData = $derived(
 		Array.from(
-			d3.rollup(
-				// group and reduce values
+			d3.rollup( // groups data and applies an aggregation function to each group
 				data,
-				(v) => d3.mean(v, (d) => d.usAqi), // calculates the mean of the array
-				(d) => d3.timeMonth.floor(d.timestamp) // data is being grouped by month
+				(v) => { // reducer function; v is the array of all items in one group / month
+					const aqiVals = v.map(d => d.usAqi).sort(d3.ascending); // extracts the usAqi values from each item and sorts values from low to high (u need to do this to use quartile)
+					return {
+						mean: d3.mean(aqiVals), // calculates the mean of the array
+						p10: d3.quantile(aqiVals, 0.10), // returns the value at a given percentile (0.10 = 10th percentile and then 0.90 = 90th percentile)
+						p90: d3.quantile(aqiVals, 0.90)
+					};
+				},
+				// https://d3js.org/d3-time#timeMonth
+				(d) => d3.timeMonth.floor(d.timestamp) // data is being grouped by month; rounds date down to first day of the month
 			),
-			([date, aqi]) => ({
+			([date, stats]) => ({
 				// Step 6: Align the date with the 15th day of the month.
 				date: new Date(date.getFullYear(), date.getMonth(), 15),
-				aqi
+				stats
 			})
 		)
 	);
@@ -82,16 +89,15 @@
 			.domain([0, d3.max(data, (d) => d.usAqi) ?? 300])
 	);
 
-	// create line generator
+	// create line 
 	// Step 1: Show the monthly average air quality (AQI) as a line. 
-	let lineGenerator = $derived(
-		d3
-			.line<{ date: Date; aqi: number | undefined }>()
+	let line = $derived(
+		d3.line <{ date: Date; mean: number | undefined }>()
 			.x((d) => xScale(d.date))
-			.y((d) => yScale(d.aqi ?? 0))
+			.y((d) => yScale(d.mean ?? 0))
 	);
 
-	// adopted from lecture
+	// adopted from Professor's repository: FullSVGBarChart.svelte
 	let xAxis = $derived(d3.axisBottom(xScale).tickFormat(d3.timeFormat('%b') as any));
 	let yAxis = $derived(d3.axisLeft(yScale));
 
@@ -116,8 +122,9 @@
 
 <svg {width} {height}>
 	<!-- Step 1: Show the monthly average air quality (AQI) as a line. -->
-	<path d={lineGenerator(monthlyData)} fill="none" stroke="black" stroke-width="2" />
+	<path d={line(monthlyData)} fill="none" stroke="black" stroke-width="2" />
 
+	<!-- adopted from Professor's repository: FullSVGBarChart.svelte -->
 	<g class="x-axis" transform="translate(0,{height - margin.bottom})" bind:this={xAxisRef}></g>
 	<g class="y-axis" transform="translate({margin.left},0)" bind:this={yAxisRef}></g>
 </svg>
