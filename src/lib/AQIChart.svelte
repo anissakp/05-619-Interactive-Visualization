@@ -57,31 +57,37 @@
 
 	// just for debugging; can be removed
 	$inspect(data);
+
+
+	let svg: SVGSVGElement;
+	
+	// from docs --> "Calling the axis component on a selection of SVG containers"
+	$effect(() => {
+		if (!svg || !data?.length) return;
+		
+		const svgSelection = d3.select(svg);
+		
+		// from docs
+		svgSelection.append('g')
+			.attr('transform', `translate(0,${height - marginBottom})`)
+			.call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b") as any)); // had to format bc it showed 2022 when crossing over
+				
+		// from docs
+		svgSelection.append('g')
+			.attr('transform', `translate(${marginLeft},0)`)
+			.call(d3.axisLeft(y));
+
+	});
+
 </script>
 
-<!-- <pre>
+
+
+<pre>
 {JSON.stringify(data[0], null, 2)}
-</pre> -->
+</pre>
 
-<svg {width} {height}>
-	<!-- X-axis -->
-	<line 
-		x1={marginLeft} 
-		x2={width - marginRight} 
-		y1={height - marginBottom} 
-		y2={height - marginBottom} 
-		stroke="black" 
-	/>
-
-	<!-- Y-axis -->
-	<line 
-		x1={marginLeft} 
-		x2={marginLeft} 
-		y1={marginTop} 
-		y2={height - marginBottom} 
-		stroke="black" 
-	/>
-</svg>
+<svg bind:this={svg} {width} {height}></svg>
 
 <style>
 	svg {
