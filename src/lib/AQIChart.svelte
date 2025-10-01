@@ -37,48 +37,61 @@
 	];
 
 	// chart dimensions
-	// adopted from https://d3js.org/getting-started#d3-in-svelte 
+	// adopted from https://d3js.org/getting-started#d3-in-svelte
 	const width = $state(800);
 	const height = $state(400);
 	let margin = $state({ top: 20, right: 20, bottom: 30, left: 40 });
 
 	// Step 1: Show the monthly average air quality (AQI) as a line.
 	// group by month and calculate mean AQI
-	const monthlyData = $derived(Array.from(
-		d3.rollup( 									// group and reduce values
-			data,
-			v => d3.mean(v, d => d.usAqi),      	// calculates the mean of the array
-			d => d3.timeMonth.floor(d.timestamp) 	// data is being grouped by month
-		),
-		([date, aqi]) => ({ 
-			// Step 6: Align the date with the 15th day of the month. 
-			date: new Date(date.getFullYear(), date.getMonth(), 15), 
-			aqi 
-	})
-	));
+	const monthlyData = $derived(
+		Array.from(
+			d3.rollup(
+				// group and reduce values
+				data,
+				(v) => d3.mean(v, (d) => d.usAqi), // calculates the mean of the array
+				(d) => d3.timeMonth.floor(d.timestamp) // data is being grouped by month
+			),
+			([date, aqi]) => ({
+				// Step 6: Align the date with the 15th day of the month.
+				date: new Date(date.getFullYear(), date.getMonth(), 15),
+				aqi
+			})
+		)
+	);
+	// looks like this when I console.log
+	// monthly data: [
+	//   {
+	//     "date": "2021-08-15T04:00:00.000Z",
+	//     "aqi": 43
+	//   },
 
 	// adopted from lecture
 	let xScale = $derived(
-		d3.scaleTime()
+		d3
+			.scaleTime()
 			.range([margin.left, width - margin.right])
-			.domain(d3.extent(monthlyData, d => d.date) as [Date, Date])
+			.domain(d3.extent(monthlyData, (d) => d.date) as [Date, Date])
 	);
 
 	// adopted from lecture
 	let yScale = $derived(
-		d3.scaleLinear()
+		d3
+			.scaleLinear()
 			.range([height - margin.bottom, margin.top])
-			.domain([0, d3.max(data, d => d.usAqi) ?? 300])
+			.domain([0, d3.max(data, (d) => d.usAqi) ?? 300])
 	);
 
 	// create line generator
 	let lineGenerator = $derived(
-		d3.line<{date: Date, aqi: number | undefined}>()
-			.x(d => xScale(d.date))
-			.y(d => yScale(d.aqi ?? 0))
+		d3
+			.line<{ date: Date; aqi: number | undefined }>()
+			.x((d) => xScale(d.date))
+			.y((d) => yScale(d.aqi ?? 0))
 	);
 
-	let xAxis = $derived(d3.axisBottom(xScale).tickFormat(d3.timeFormat("%b") as any));
+	// adopted from lecture
+	let xAxis = $derived(d3.axisBottom(xScale).tickFormat(d3.timeFormat('%b') as any));
 	let yAxis = $derived(d3.axisLeft(yScale));
 
 	let xAxisRef: SVGGElement;
@@ -98,16 +111,10 @@
 
 	// just for debugging; can be removed
 	$inspect(data);
-	
 </script>
 
 <svg {width} {height}>
-	<path 
-		d={lineGenerator(monthlyData)} 
-		fill="none" 
-		stroke="black" 
-		stroke-width="2"
-	/>
+	<path d={lineGenerator(monthlyData)} fill="none" stroke="black" stroke-width="2" />
 	<g class="x-axis" transform="translate(0,{height - margin.bottom})" bind:this={xAxisRef}></g>
 	<g class="y-axis" transform="translate({margin.left},0)" bind:this={yAxisRef}></g>
 </svg>
