@@ -1,6 +1,6 @@
 <!-- TO-DO: Create a time-series visualization of the air quality data. -->
 <!-- ✅ Step 1: Show the monthly average air quality (AQI) as a line. -->
-<!-- Step 2: Show the inner 80 percentiles (10% to 90%) as an area behind the line. -->
+<!-- ✅ Step 2: Show the inner 80 percentiles (10% to 90%) as an area behind the line. -->
 <!-- Step 3: Add a dropdown to select the station. -->
 <!-- Step 4: If no station is selected, the chart should show the series for all stations. -->
 <!-- Step 5: Sort the station names by count. -->
@@ -136,6 +136,9 @@
 <svg {width} {height}>
 	<!-- Step 1: Show the monthly average air quality (AQI) as a line. -->
 	<path d={line(monthlyData)} fill="none" stroke="black" stroke-width="2" />
+
+	<!-- Step 2: Show the inner 80 percentiles (10% to 90%) as an area behind the line. -->
+	<path d={area(monthlyData)} fill="grey" opacity="0.25" />
 
 	<!-- adopted from Professor's repository: FullSVGBarChart.svelte -->
 	<g class="x-axis" transform="translate(0,{height - margin.bottom})" bind:this={xAxisRef}></g>
