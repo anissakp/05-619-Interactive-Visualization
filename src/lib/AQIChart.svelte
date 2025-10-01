@@ -38,56 +38,83 @@
 
 	// chart dimensions
 	// adopted from https://d3js.org/getting-started#d3-in-svelte 
-	const width = 800;
-	const height = 400;
-	const marginTop = 20;
-	const marginRight = 20;
-	const marginBottom = 30;
-	const marginLeft = 40;
+	const width = $state(800);
+	const height = $state(400);
+	let margin = $state({ top: 20, right: 20, bottom: 30, left: 40 });
 
-	// adopted from https://d3js.org/d3-scale/time
-	let x = d3.scaleTime()
-		.range([marginLeft, width - marginRight])
-		.domain(d3.extent(data, d => d.timestamp) as [Date, Date]);
+	// Step 1: Show the monthly average air quality (AQI) as a line.
+	// group by month and calculate mean AQI
+	const monthlyData = $derived(Array.from(
+		d3.rollup( 									// group and reduce values
+			data,
+			v => d3.mean(v, d => d.usAqi),      	// calculates the mean of the array
+			d => d3.timeMonth.floor(d.timestamp) 	// data is being grouped by month
+		),
+		([date, aqi]) => ({ 
+			// Step 6: Align the date with the 15th day of the month. 
+			date: new Date(date.getFullYear(), date.getMonth(), 15), 
+			aqi 
+	})
+	));
 
-	// adopted from https://d3js.org/d3-scale/linear
-	let y = d3.scaleLinear()
-		.range([height - marginBottom, marginTop])
-		.domain([0, d3.max(data, d => d.usAqi) || 300]);
+	// adopted from lecture
+	let xScale = $derived(
+		d3.scaleTime()
+			.range([margin.left, width - margin.right])
+			.domain(d3.extent(monthlyData, d => d.date) as [Date, Date])
+	);
+
+	// adopted from lecture
+	let yScale = $derived(
+		d3.scaleLinear()
+			.range([height - margin.bottom, margin.top])
+			.domain([0, d3.max(data, d => d.usAqi) ?? 300])
+	);
+
+	// create line generator
+	let lineGenerator = $derived(
+		d3.line<{date: Date, aqi: number | undefined}>()
+			.x(d => xScale(d.date))
+			.y(d => yScale(d.aqi ?? 0))
+	);
+
+	let xAxis = $derived(d3.axisBottom(xScale).tickFormat(d3.timeFormat("%b") as any));
+	let yAxis = $derived(d3.axisLeft(yScale));
+
+	let xAxisRef: SVGGElement;
+	let yAxisRef: SVGGElement;
+
+	$effect(() => {
+		if (xAxisRef && data.length > 0) {
+			d3.select(xAxisRef).call(xAxis);
+		}
+	});
+
+	$effect(() => {
+		if (yAxisRef && data.length > 0) {
+			d3.select(yAxisRef).call(yAxis);
+		}
+	});
 
 	// just for debugging; can be removed
 	$inspect(data);
-
-
-	let svg: SVGSVGElement;
 	
-	// from docs --> "Calling the axis component on a selection of SVG containers"
-	$effect(() => {
-		if (!svg || !data?.length) return;
-		
-		const svgSelection = d3.select(svg);
-		
-		// from docs
-		svgSelection.append('g')
-			.attr('transform', `translate(0,${height - marginBottom})`)
-			.call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b") as any)); // had to format bc it showed 2022 when crossing over
-				
-		// from docs
-		svgSelection.append('g')
-			.attr('transform', `translate(${marginLeft},0)`)
-			.call(d3.axisLeft(y));
-
-	});
-
 </script>
 
-
+<svg {width} {height}>
+	<path 
+		d={lineGenerator(monthlyData)} 
+		fill="none" 
+		stroke="black" 
+		stroke-width="2"
+	/>
+	<g class="x-axis" transform="translate(0,{height - margin.bottom})" bind:this={xAxisRef}></g>
+	<g class="y-axis" transform="translate({margin.left},0)" bind:this={yAxisRef}></g>
+</svg>
 
 <pre>
-{JSON.stringify(data[0], null, 2)}
+	{JSON.stringify(data[0], null, 2)}
 </pre>
-
-<svg bind:this={svg} {width} {height}></svg>
 
 <style>
 	svg {
