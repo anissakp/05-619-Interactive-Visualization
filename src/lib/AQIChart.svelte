@@ -102,6 +102,14 @@
 			.y((d) => yScale(d.mean ?? 0))
 	);
 
+	// keep getting errors so i'm getting help with type annotations 
+	let area = $derived(
+		d3.area<{ date: Date; p10: number | undefined; p90: number | undefined}>()
+		.x((d) => xScale(d.date))
+		.y0((d) => yScale(d.p10 ?? 0))
+		.y1((d) => yScale(d.p90 ?? 0))
+	)
+
 	// adopted from Professor's repository: FullSVGBarChart.svelte
 	let xAxis = $derived(d3.axisBottom(xScale).tickFormat(d3.timeFormat('%b') as any));
 	let yAxis = $derived(d3.axisLeft(yScale));
