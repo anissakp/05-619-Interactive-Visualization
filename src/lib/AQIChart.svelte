@@ -38,6 +38,9 @@
 		).sort((a,b) => b.count - a.count) // sort by descending count
 	)
 
+	// Step 3: Add a dropdown to select station
+	let selectedStation = $state<string | null>(null);
+
 
 	// Step 7: In the background of the chart, show the AQI levels as color.
 	const aqiLevels = [
