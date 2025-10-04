@@ -39,7 +39,7 @@
 	)
 
 	// Step 3: Add a dropdown to select station
-	let selectedStation = $state<string | null>(null);
+	let selectedStation = $state<string> ('Lawrenceville');
 
 	// Step 4: Filter data by selected station (or show it all if null)
 	const filteredData = $derived(
@@ -157,7 +157,6 @@
 
 <!-- dropdown -->
 <select bind:value={selectedStation}>
-	<option value = {null}> All Stations ({data.length})</option>
 	{#each stationCounts as station}
 		<option value = {station.name}>
 			{station.name} ({station.count})

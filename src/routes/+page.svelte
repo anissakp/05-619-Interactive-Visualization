@@ -20,20 +20,29 @@
 			'https://dig.cmu.edu/datavis-fall-2025/assignments/data/%5BUSA-Pennsylvania-Pittsburgh%5D_daily-avg.csv'
 	};
 
-	const selectedDataset: keyof typeof datasets = $state('liberty_sahs');
+	// const selectedDataset: keyof typeof datasets = $state('liberty_sahs');
 
-	const data = $derived.by(() =>
-		d3.csv(datasets[selectedDataset], (d: any) => ({
-			city: d.City,
-			country: d.Country,
-			mainPollutant: d['Main pollutant'],
-			pm25: +d['PM2.5'],
-			state: d.State,
-			stationName: d['Station name'],
-			timestamp: new Date(d['Timestamp(UTC)']),
-			usAqi: +d['US AQI']
-		}))
-	);
+	// const data = $derived.by(() =>
+	// 	d3.csv(datasets[selectedDataset], (d: any) => ({
+
+	// load ALL datasets and combine them - ?
+	//const data = $derived.by(async () => {
+	//const allData = await Promise.all(
+	const data = Promise.all(
+		Object.values(datasets).map((url) =>
+			d3.csv(url, (d: any) => ({
+				city: d.City,
+				country: d.Country,
+				mainPollutant: d['Main pollutant'],
+				pm25: +d['PM2.5'],
+				state: d.State,
+				stationName: d['Station name'],
+				timestamp: new Date(d['Timestamp(UTC)']),
+				usAqi: +d['US AQI']
+			}))
+		)
+	).then((allData) => allData.flat());
+	// flatten array of arrays into single array
 </script>
 
 {#await data}
