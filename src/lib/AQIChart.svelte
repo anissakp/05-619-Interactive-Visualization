@@ -69,7 +69,7 @@
 	const monthlyData = $derived(
 		Array.from(
 			d3.rollup( // groups data and applies an aggregation function to each group
-				data,
+				filteredData,
 				(v) => { // reducer function; v is the array of all items in one group / month
 					const aqiVals = v.map(d => d.usAqi).sort(d3.ascending); // extracts the usAqi values from each item and sorts values from low to high (u need to do this to use quartile)
 					return {
@@ -112,7 +112,7 @@
 		d3
 			.scaleLinear()
 			.range([height - margin.bottom, margin.top])
-			.domain([0, d3.max(data, (d) => d.usAqi) ?? 300]) // im confused on how to show the aqiLevels when my y-axis is 0-70
+			.domain([0, d3.max(filteredData, (d) => d.usAqi) ?? 300]) // im confused on how to show the aqiLevels when my y-axis is 0-70
 			//.domain([0, 500])  
 	);
 
