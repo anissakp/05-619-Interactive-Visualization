@@ -171,12 +171,13 @@
 	<!-- Step 7: In the background of the chart, show the AQI levels as color. -->
 	{#each aqiLevels as level}
 		<rect
+		
 			x={margin.left}
-			y={yScale(level.max ?? 500)}
+			y={Math.max(margin.top, yScale(level.max ?? 500))}
 			width={width - margin.left - margin.right}
-			height={yScale(level.min) - yScale(level.max ?? 500)}
+			height={Math.max(0, Math.min(yScale(level.min), height - margin.bottom) - Math.max(margin.top, yScale(level.max ?? 500)))}
 			fill={level.color}
-			opacity="0.3"
+			opacity="0.5"
 		/>
 	{/each}
 
