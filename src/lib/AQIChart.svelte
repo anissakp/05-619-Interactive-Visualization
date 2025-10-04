@@ -155,6 +155,17 @@
 	$inspect(data);
 </script>
 
+<!-- dropdown -->
+<select bind:value={selectedStation}>
+	<option value = {null}> All Stations ({data.length})</option>
+	{#each stationCounts as station}
+		<option value = {station.name}>
+			{station.name} ({station.count})
+		</option>
+	{/each}
+</select>
+
+
 <svg {width} {height}>
 	<!-- Step 1: Show the monthly average air quality (AQI) as a line. -->
 	<path d={line(monthlyData)} fill="none" stroke="black" stroke-width="2" />
