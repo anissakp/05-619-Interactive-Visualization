@@ -41,6 +41,11 @@
 	// Step 3: Add a dropdown to select station
 	let selectedStation = $state<string | null>(null);
 
+	// Step 4: Filter data by selected station (or show it all if null)
+	const filteredData = $derived(
+		selectedStation ? data.filter(d => d.stationName == selectedStation) : data
+	);
+
 
 	// Step 7: In the background of the chart, show the AQI levels as color.
 	const aqiLevels = [
