@@ -36,7 +36,9 @@
 				mainPollutant: d['Main pollutant'],
 				pm25: +d['PM2.5'],
 				state: d.State,
-				stationName: d['Station name'],
+				// stationName: d['Station name'],
+				// station name column is undefined in the csv file for USA-Pennsylvania-Pittsburgh so this sets the station name to it bc it's null
+				stationName: d['Station name'] || 'USA-Pennsylvania-Pittsburgh',
 				timestamp: new Date(d['Timestamp(UTC)']),
 				usAqi: +d['US AQI']
 			}))
