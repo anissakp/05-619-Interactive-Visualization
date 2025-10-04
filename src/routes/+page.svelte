@@ -20,7 +20,7 @@
 			'https://dig.cmu.edu/datavis-fall-2025/assignments/data/%5BUSA-Pennsylvania-Pittsburgh%5D_daily-avg.csv'
 	};
 
-	const selectedDataset: keyof typeof datasets = $state('avalon');
+	const selectedDataset: keyof typeof datasets = $state('liberty_sahs');
 
 	const data = $derived.by(() =>
 		d3.csv(datasets[selectedDataset], (d: any) => ({

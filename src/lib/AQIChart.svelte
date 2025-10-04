@@ -26,6 +26,19 @@
 	// properties this component accepts
 	const { data }: { data: Item[] } = $props();
 
+	// Step 5: Sort the station names by count.
+	const stationCounts = $derived(
+		Array.from(
+			d3.rollup(
+				data,
+				(v) => v.length,
+				(d) => d.stationName
+			),
+			([name, count]) => ({ name, count })
+		).sort((a,b) => b.count - a.count) // sort by descending count
+	)
+
+
 	// Step 7: In the background of the chart, show the AQI levels as color.
 	const aqiLevels = [
 		{ name: 'Good', min: 0, max: 50, color: '#9cd84e' },
@@ -91,7 +104,8 @@
 		d3
 			.scaleLinear()
 			.range([height - margin.bottom, margin.top])
-			.domain([0, d3.max(data, (d) => d.usAqi) ?? 300])
+			.domain([0, d3.max(data, (d) => d.usAqi) ?? 300]) // im confused on how to show the aqiLevels when my y-axis is 0-70
+			//.domain([0, 500])  
 	);
 
 	// create line 
@@ -111,7 +125,7 @@
 	)
 
 	// adopted from Professor's repository: FullSVGBarChart.svelte
-	let xAxis = $derived(d3.axisBottom(xScale).tickFormat(d3.timeFormat('%b') as any));
+	let xAxis = $derived(d3.axisBottom(xScale).tickFormat(d3.timeFormat('%Y') as any));
 	let yAxis = $derived(d3.axisLeft(yScale));
 
 	let xAxisRef: SVGGElement;
@@ -139,6 +153,9 @@
 
 	<!-- Step 2: Show the inner 80 percentiles (10% to 90%) as an area behind the line. -->
 	<path d={area(monthlyData)} fill="grey" opacity="0.25" />
+
+	<!-- Step 7: In the background of the chart, show the AQI levels as color. -->
+
 
 	<!-- adopted from Professor's repository: FullSVGBarChart.svelte -->
 	<g class="x-axis" transform="translate(0,{height - margin.bottom})" bind:this={xAxisRef}></g>
