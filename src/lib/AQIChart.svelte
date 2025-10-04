@@ -5,8 +5,8 @@
 <!-- Step 4: If no station is selected, the chart should show the series for all stations. -->
 <!-- ✅ Step 5: Sort the station names by count. -->
 <!-- ✅ Step 6: Align the date with the 15th day of the month. -->
-<!-- Step 7: In the background of the chart, show the AQI levels as color. -->
-<!-- Step 8: Add a checkbox to toggle showing the raw data as points (time and AQI) on the chart. -->
+<!-- ✅ Step 7: In the background of the chart, show the AQI levels as color. -->
+<!-- ✅ Step 8: Add a checkbox to toggle showing the raw data as points (time and AQI) on the chart. -->
 
 <script lang="ts">
 	import * as d3 from 'd3';
@@ -25,6 +25,9 @@
 
 	// properties this component accepts
 	const { data }: { data: Item[] } = $props();
+
+	// Step 8: Add a checkbox to toggle showing the raw data as points
+	let showRawData = $state(false);
 
 	// Step 5: Sort the station names by count.
 	const stationCounts = $derived(
@@ -167,6 +170,21 @@
 	{/each}
 </select>
 
+<br>
+
+<!-- Step 8: Checkbox to toggle raw data -->
+ <!-- https://svelte.dev/docs/element-directives#bind -->
+<label>
+	Show Raw Data
+	<input type = "checkbox" bind:checked={showRawData} />
+</label>
+
+<br>
+
+<label>
+	Number of Records: {filteredData.length}
+</label>
+
 <svg {width} {height}>
 	<!-- Step 7: In the background of the chart, show the AQI levels as color. -->
 	{#each aqiLevels as level}
@@ -186,6 +204,18 @@
 
 	<!-- Step 2: Show the inner 80 percentiles (10% to 90%) as an area behind the line. -->
 	<path d={area(monthlyData)} fill="grey" opacity="0.25" />
+
+	<!-- Step 8: Show raw data points when checkbox is checked -->
+	{#if showRawData}
+		{#each filteredData as d}
+			<circle
+				cx={xScale(d.timestamp)}
+				cy={yScale(d.usAqi)}
+				r="1"
+				fill="black"
+		/>
+		{/each}
+	{/if}
 
 	<!-- adopted from Professor's repository: FullSVGBarChart.svelte -->
 	<g class="x-axis" transform="translate(0,{height - margin.bottom})" bind:this={xAxisRef}></g>
