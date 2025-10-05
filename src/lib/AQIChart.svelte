@@ -50,6 +50,7 @@
 	);
 
 	// Step 7: In the background of the chart, show the AQI levels as color.
+	// given in assignment
 	const aqiLevels = [
 		{ name: 'Good', min: 0, max: 50, color: '#9cd84e' },
 		{ name: 'Moderate', min: 51, max: 100, color: '#facf39' },
@@ -65,37 +66,75 @@
 	const height = $state(400);
 	let margin = $state({ top: 20, right: 20, bottom: 30, left: 40 });
 
+	// group by month and calculate mean AQI
 	// Step 1: Show the monthly average air quality (AQI) as a line.
 	// Step 2: Show the inner 80 percentiles (10% to 90%) as an area behind the line.
-	// group by month and calculate mean AQI
-	const monthlyData = $derived(
-		Array.from(
-			d3.rollup(
-				// groups data and applies an aggregation function to each group
-				filteredData,
-				(v) => {
-					// reducer function; v is the array of all items in one group / month
-					const aqiVals = v.map((d) => d.usAqi).sort(d3.ascending); // extracts the usAqi values from each item and sorts values from low to high (u need to do this to use quartile)
-					return {
-						mean: d3.mean(aqiVals), // calculates the mean of the array
-						p10: d3.quantile(aqiVals, 0.1), // returns the value at a given percentile (0.10 = 10th percentile and then 0.90 = 90th percentile)
-						p90: d3.quantile(aqiVals, 0.9)
-					};
-				},
-				// https://d3js.org/d3-time#timeMonth
-				(d) => d3.timeMonth.floor(d.timestamp) // data is being grouped by month; rounds date down to first day of the month
-			),
-			([date, stats]) => ({
-				// Step 6: Align the date with the 15th day of the month.
-				date: new Date(date.getFullYear(), date.getMonth(), 15),
-
-				...stats // the spread operator (from mdn documentation) copies the properties from one object into another
-
-				// without operator it creates: { date: "2021-08-15", stats: { mean: 42, p10: 35, p90: 48 } }
-				// with operator it creates: { date: "2021-08-15", mean: 42, p10: 35, p90: 48 }
-			})
-		)
-	);
+	// Step 4: If no station is selected, show series for all stations group by month and calculate mean AQI
+	const monthlyDataByStation = $derived.by(() => {
+		if (selectedStation) {
+			// single station selected -> return array with one entry !! this took so long
+			return [
+				{
+					station: selectedStation,
+					data: Array.from(
+						d3.rollup(
+							// groups data and applies an aggregation function to each group
+							filteredData,
+							(v) => {
+								// reducer function; v is the array of all items in one group / month
+								const aqiVals = v.map((d) => d.usAqi).sort(d3.ascending); // extracts the usAqi values from each item and sorts values from low to high (u need to do this to use quartile)
+								return {
+									mean: d3.mean(aqiVals), // calculates the mean of the array
+									p10: d3.quantile(aqiVals, 0.1), // returns the value at a given percentile (0.10 = 10th percentile and then 0.90 = 90th percentile)
+									p90: d3.quantile(aqiVals, 0.9)
+								};
+							},
+							// https://d3js.org/d3-time#timeMonth
+							(d) => d3.timeMonth.floor(d.timestamp) // data is being grouped by month; rounds date down to first day of the month
+						),
+						([date, stats]) => ({
+							// Step 6: Align the date with the 15th day of the month.
+							date: new Date(date.getFullYear(), date.getMonth(), 15),
+							...stats // the spread operator (from mdn documentation) copies the properties from one object into another
+							// without operator it creates: { date: "2021-08-15", stats: { mean: 42, p10: 35, p90: 48 } }
+							// with operator it creates: { date: "2021-08-15", mean: 42, p10: 35, p90: 48 }
+						})
+					)
+				}
+			];
+		} else {
+			// no station selected - show all stations as separate series
+			return Array.from(
+				d3.group(
+					data.filter((d) => d.stationName), // filter out any records with undefined station names
+					(d) => d.stationName
+				),
+				// transform each group (station) into an object with station name and monthly data
+				([station, stationData]) => ({
+					station, // station name
+					data: Array.from(
+						d3.rollup(
+							stationData, // all the data points for this specific station
+							(v) => {
+								// for each month, calculate statistics from all AQI values in that month
+								const aqiVals = v.map((d) => d.usAqi).sort(d3.ascending);
+								return {
+									mean: d3.mean(aqiVals),
+									p10: d3.quantile(aqiVals, 0.1),
+									p90: d3.quantile(aqiVals, 0.9)
+								};
+							},
+							(d) => d3.timeMonth.floor(d.timestamp)
+						),
+						([date, stats]) => ({
+							date: new Date(date.getFullYear(), date.getMonth(), 15),
+							...stats
+						})
+					)
+				})
+			);
+		}
+	});
 	// looks like this when I console.log
 	// monthly data: [
 	//   {
@@ -103,12 +142,22 @@
 	//     "aqi": 43
 	//   },
 
+	// colored lines for different stations
+	const colorScale = $derived(
+		d3.scaleOrdinal(d3.schemeCategory10).domain(stationCounts.map((s) => s.name))
+	);
+
 	// adopted from lecture
 	let xScale = $derived(
 		d3
 			.scaleTime()
 			.range([margin.left, width - margin.right])
-			.domain(d3.extent(monthlyData, (d) => d.date) as [Date, Date])
+			.domain(
+				d3.extent(
+					monthlyDataByStation.flatMap((s) => s.data),
+					(d) => d.date
+				) as [Date, Date]
+			)
 	);
 
 	// adopted from lecture
@@ -116,8 +165,7 @@
 		d3
 			.scaleLinear()
 			.range([height - margin.bottom, margin.top])
-			.domain([0, d3.max(filteredData, (d) => d.usAqi) ?? 300]) // im confused on how to show the aqiLevels when my y-axis is 0-70
-		//.domain([0, 500])
+			.domain([0, d3.max(filteredData, (d) => d.usAqi) ?? 300])
 	);
 
 	// create line
@@ -163,6 +211,7 @@
 
 <!-- dropdown -->
 <select bind:value={selectedStation}>
+	<option value={null}> All Stations ({data.length})</option>
 	{#each stationCounts as station}
 		<option value={station.name}>
 			{station.name} ({station.count})
@@ -170,50 +219,78 @@
 	{/each}
 </select>
 
-<br>
+<br />
 
 <!-- Step 8: Checkbox to toggle raw data -->
- <!-- https://svelte.dev/docs/element-directives#bind -->
+<!-- https://svelte.dev/docs/element-directives#bind -->
 <label>
 	Show Raw Data
-	<input type = "checkbox" bind:checked={showRawData} />
+	<input type="checkbox" bind:checked={showRawData} />
 </label>
 
-<br>
+<br />
 
 <label>
 	Number of Records: {filteredData.length}
 </label>
 
+<br />
+
+<!-- this legend will show up on the all stations option -->
+{#if !selectedStation}
+	<div style="margin-top: 20px;">
+		<div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px;">
+			{#each stationCounts as station}
+				<div style="display: flex; align-items: center; gap: 5px;">
+					<div
+						style="width: 20px; height: 3px; background-color: {colorScale(station.name)};"
+					></div>
+					<span style="font-size: 14px;">{station.name}</span>
+				</div>
+			{/each}
+		</div>
+	</div>
+{/if}
+
+<br />
+
 <svg {width} {height}>
 	<!-- Step 7: In the background of the chart, show the AQI levels as color. -->
 	{#each aqiLevels as level}
 		<rect
-		
 			x={margin.left}
 			y={Math.max(margin.top, yScale(level.max ?? 500))}
 			width={width - margin.left - margin.right}
-			height={Math.max(0, Math.min(yScale(level.min), height - margin.bottom) - Math.max(margin.top, yScale(level.max ?? 500)))}
+			height={Math.max(
+				0,
+				Math.min(yScale(level.min), height - margin.bottom) -
+					Math.max(margin.top, yScale(level.max ?? 500))
+			)}
 			fill={level.color}
 			opacity="0.5"
 		/>
 	{/each}
 
-	<!-- Step 1: Show the monthly average air quality (AQI) as a line. -->
-	<path d={line(monthlyData)} fill="none" stroke="black" stroke-width="2" />
+	<!-- Draw line and area for each station -->
+	{#each monthlyDataByStation as stationSeries}
+		<!-- Step 2: Show the inner 80 percentiles (10% to 90%) as an area behind the line (only for single station) -->
+		{#if selectedStation}
+			<path d={area(stationSeries.data)} fill="grey" opacity="0.25" />
+		{/if}
 
-	<!-- Step 2: Show the inner 80 percentiles (10% to 90%) as an area behind the line. -->
-	<path d={area(monthlyData)} fill="grey" opacity="0.25" />
+		<!-- Step 1: Show the monthly average air quality (AQI) as a line -->
+		<path
+			d={line(stationSeries.data)}
+			fill="none"
+			stroke={selectedStation ? 'black' : colorScale(stationSeries.station)}
+			stroke-width="2"
+		/>
+	{/each}
 
 	<!-- Step 8: Show raw data points when checkbox is checked -->
 	{#if showRawData}
 		{#each filteredData as d}
-			<circle
-				cx={xScale(d.timestamp)}
-				cy={yScale(d.usAqi)}
-				r="1"
-				fill="black"
-		/>
+			<circle cx={xScale(d.timestamp)} cy={yScale(d.usAqi)} r="1" fill="black" />
 		{/each}
 	{/if}
 
@@ -222,9 +299,9 @@
 	<g class="y-axis" transform="translate({margin.left},0)" bind:this={yAxisRef}></g>
 </svg>
 
-<pre>
+<!-- <pre>
 	{JSON.stringify(data[0], null, 2)}
-</pre>
+</pre> -->
 
 <style>
 	svg {
