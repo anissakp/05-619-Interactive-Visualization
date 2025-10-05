@@ -2,11 +2,12 @@
 <!-- ✅ Step 1: Show the monthly average air quality (AQI) as a line. -->
 <!-- ✅ Step 2: Show the inner 80 percentiles (10% to 90%) as an area behind the line. -->
 <!-- ✅ Step 3: Add a dropdown to select the station. -->
-<!-- Step 4: If no station is selected, the chart should show the series for all stations. -->
+<!-- ✅ Step 4: If no station is selected, the chart should show the series for all stations. -->
 <!-- ✅ Step 5: Sort the station names by count. -->
 <!-- ✅ Step 6: Align the date with the 15th day of the month. -->
 <!-- ✅ Step 7: In the background of the chart, show the AQI levels as color. -->
 <!-- ✅ Step 8: Add a checkbox to toggle showing the raw data as points (time and AQI) on the chart. -->
+<!-- Step 9: Add key for AQI Levels! -->
 
 <script lang="ts">
 	import * as d3 from 'd3';
