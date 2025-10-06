@@ -140,7 +140,7 @@
 			)
 	);
 
-	// Y-axis: linear scale from 0 to max AQI value		
+	// Y-axis: linear scale from 0 to max AQI value
 	// Source: Professor's GitHub Repo, FullSVGBarChart.svelte
 	let yScale = $derived(
 		d3
@@ -218,8 +218,6 @@
 	<input type="checkbox" bind:checked={showRawData} />
 </label>
 
-<br />
-
 <!-- Display filtered record count -->
 <label>
 	Number of Records: {filteredData.length}
@@ -273,14 +271,13 @@
 	<g class="y-axis" transform="translate({margin.left},0)" bind:this={yAxisRef}></g>
 </svg>
 
-<br />
-
 <!-- LEGENDS -->
 
 <!-- Station Legend (only visible when showing all stations) -->
 {#if !selectedStation}
 	<div style="margin-top: 20px;">
 		<div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px;">
+			<label style="margin-right: 10px;">Stations</label>
 			{#each stationCounts as station}
 				<div style="display: flex; align-items: center; gap: 5px;">
 					<div
@@ -319,7 +316,44 @@
 </div>
 
 <style>
+	* {
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+	}
+	
 	svg {
-		font-family: sans-serif;
+		font-family: inherit;
+		border: 1px solid #e0e0e0;
+		border-radius: 4px;
+	}
+	
+	.controls {
+		background: #f8f9fa;
+		padding: 16px;
+		border-radius: 8px;
+		margin-bottom: 20px;
+		display: flex;
+		gap: 20px;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+	
+	.legend-section {
+		background: #f8f9fa;
+		padding: 16px;
+		border-radius: 8px;
+		margin-top: 24px;
+	}
+	
+	select {
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		font-size: 14px;
+	}
+	
+	label {
+		font-size: 14px;
+		display: flex;
+		align-items: center;
+		padding-top: 5px;
 	}
 </style>

@@ -2,6 +2,9 @@
 	import AQIChart from '$lib/AQIChart.svelte';
 	import * as d3 from 'd3';
 
+	// DATA SOURCES
+
+	// URLs for all station station CSV files
 	const datasets = {
 		avalon: 'https://dig.cmu.edu/datavis-fall-2025/assignments/data/%5BAvalon%5D_daily-avg.csv',
 		glassport_high_street:
@@ -20,14 +23,10 @@
 			'https://dig.cmu.edu/datavis-fall-2025/assignments/data/%5BUSA-Pennsylvania-Pittsburgh%5D_daily-avg.csv'
 	};
 
-	// const selectedDataset: keyof typeof datasets = $state('liberty_sahs');
+	// DATA LOADING
 
-	// const data = $derived.by(() =>
-	// 	d3.csv(datasets[selectedDataset], (d: any) => ({
-
-	// load ALL datasets and combine them - ?
-	//const data = $derived.by(async () => {
-	//const allData = await Promise.all(
+	// Load all CSV files in parallel and combine into single dataset
+	// Note: USA-Pennsylvania-Pittsburgh CVS lacks "Station Name" column, so a fallback value is provided
 	const data = Promise.all(
 		Object.values(datasets).map((url) =>
 			d3.csv(url, (d: any) => ({
@@ -36,15 +35,12 @@
 				mainPollutant: d['Main pollutant'],
 				pm25: +d['PM2.5'],
 				state: d.State,
-				// stationName: d['Station name'],
-				// station name column is undefined in the csv file for USA-Pennsylvania-Pittsburgh so this sets the station name to it bc it's null
 				stationName: d['Station name'] || 'USA-Pennsylvania-Pittsburgh',
 				timestamp: new Date(d['Timestamp(UTC)']),
 				usAqi: +d['US AQI']
 			}))
 		)
 	).then((allData) => allData.flat());
-	// flatten array of arrays into single array
 </script>
 
 {#await data}
@@ -61,6 +57,6 @@
 
 <style>
 	* {
-		font-family: sans-serif;
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 	}
 </style>
