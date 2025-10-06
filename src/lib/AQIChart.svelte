@@ -237,24 +237,6 @@
 
 <br />
 
-<!-- this legend will show up on the all stations option -->
-{#if !selectedStation}
-	<div style="margin-top: 20px;">
-		<div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px;">
-			{#each stationCounts as station}
-				<div style="display: flex; align-items: center; gap: 5px;">
-					<div
-						style="width: 20px; height: 3px; background-color: {colorScale(station.name)};"
-					></div>
-					<span style="font-size: 14px;">{station.name}</span>
-				</div>
-			{/each}
-		</div>
-	</div>
-{/if}
-
-<br />
-
 <svg {width} {height}>
 	<!-- Step 7: In the background of the chart, show the AQI levels as color. -->
 	{#each aqiLevels as level}
@@ -303,6 +285,49 @@
 <!-- <pre>
 	{JSON.stringify(data[0], null, 2)}
 </pre> -->
+
+<br />
+
+<!-- this legend will show up on the all stations option -->
+{#if !selectedStation}
+	<div style="margin-top: 20px;">
+		<div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px;">
+			{#each stationCounts as station}
+				<div style="display: flex; align-items: center; gap: 5px;">
+					<div
+						style="width: 20px; height: 3px; background-color: {colorScale(station.name)};"
+					></div>
+					<span style="font-size: 14px;">{station.name}</span>
+				</div>
+			{/each}
+		</div>
+	</div>
+{/if}
+
+<!-- Step 9: Add key for AQI Levels -->
+<div style="margin-top: 20px;">
+	<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+		<label style="margin-right: 10px;">US AQI</label>
+		{#each aqiLevels as level}
+			<div 
+				style="
+					display: flex; 
+					align-items: center; 
+					justify-content: center;
+					background-color: {level.color}80; 
+					padding: 12px 20px; 
+					border-radius: 12px;
+					min-width: 120px;
+				"
+			>
+				<div style="text-align: center">
+					<div style="font-size: 13px; line-height: 1.3;">{level.name}</div>
+					<div style="font-size: 12px;">{level.min}-{level.max ?? '301+'}</div>
+				</div>
+			</div>
+		{/each}
+	</div>
+</div>
 
 <style>
 	svg {
