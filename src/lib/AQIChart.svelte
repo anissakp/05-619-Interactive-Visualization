@@ -321,27 +321,8 @@
 	}
 	
 	svg {
-		font-family: inherit;
 		border: 1px solid #e0e0e0;
 		border-radius: 4px;
-	}
-	
-	.controls {
-		background: #f8f9fa;
-		padding: 16px;
-		border-radius: 8px;
-		margin-bottom: 20px;
-		display: flex;
-		gap: 20px;
-		align-items: center;
-		flex-wrap: wrap;
-	}
-	
-	.legend-section {
-		background: #f8f9fa;
-		padding: 16px;
-		border-radius: 8px;
-		margin-top: 24px;
 	}
 	
 	select {
