@@ -186,11 +186,11 @@
 
 	// Render axes when data loads
 	$effect(() => {
-		if (xAxisRef && data.length > 0) { // Slant the axis
+		if (xAxisRef && data.length > 0) { 
 			d3.select(xAxisRef)
 				.call(xAxis)
 				.selectAll('text')
-				.attr('transform', 'rotate(-45)')
+				.attr('transform', 'rotate(-45)') // Slant the axis
 				.style('text-anchor', 'end')
 				.attr('dx', '-.8em')
 				.attr('dy', '.15em');

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import AQIChart from '$lib/AQIChart.svelte';
+	import MapChart from '$lib/MapChart.svelte';
 	import * as d3 from 'd3';
 
 	// DATA SOURCES
@@ -50,6 +51,13 @@
 	<!-- promise was fulfilled or not a Promise -->
 	<h2>AQI Chart</h2>
 	<AQIChart {data} />
+
+	<br>
+	<br>
+
+	<h2>Map Chart</h2>              
+	<MapChart {data} />                   
+
 {:catch error}
 	<!-- promise was rejected -->
 	<p>Something went wrong: {error.message}</p>
