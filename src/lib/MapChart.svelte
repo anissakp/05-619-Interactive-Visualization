@@ -60,6 +60,17 @@
 	const mapWidth = width - margin.left - margin.right;
 	const mapHeight = height - margin.top - margin.bottom;
 
+    // AQI level definitions with colors
+	// Source: Assignment description
+	const aqiLevels = [
+		{ name: 'Good', min: 0, max: 50, color: '#9cd84e' },
+		{ name: 'Moderate', min: 51, max: 100, color: '#facf39' },
+		{ name: 'Unhealthy for Sensitive Groups', min: 101, max: 150, color: '#f99049' },
+		{ name: 'Unhealthy', min: 151, max: 200, color: '#f65e5f' },
+		{ name: 'Very Unhealthy', min: 201, max: 300, color: '#a070b6' },
+		{ name: 'Hazardous', min: 301, max: 500, color: '#a06a7b' }
+	];
+
     // Station coordinates lookup table [longitude, latitude]
     // Coordinates are [longitude, latitude] for D3 projection
 	// Source: Google search for each city
@@ -74,7 +85,7 @@
 		'USA-Pennsylvania-Pittsburgh': [-79.9959, 40.4406]
 	};
 
-    
+
     // DATA LOADING
 	// Load Pennsylvania GeoJSON data
 	// Source: https://raw.githubusercontent.com/plotly/datasets/master/geojson-counties-fips.json
