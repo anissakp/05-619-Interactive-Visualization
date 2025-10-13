@@ -42,7 +42,7 @@
 	// Source: https://d3js.org/getting-started#d3-in-svelte
 	const width = $state(800);
 	const height = $state(400);
-	let margin = $state({ top: 20, right: 20, bottom: 30, left: 40 });
+	let margin = $state({ top: 20, right: 20, bottom: 60, left: 40 });
 
 	// AQI level definitions with colors
 	// Source: Assignment description
@@ -177,7 +177,8 @@
 	// AXES
 
 	// Source: Professor's GitHub Repo, FullSVGBarChart.svelte
-	let xAxis = $derived(d3.axisBottom(xScale).tickFormat(d3.timeFormat('%Y') as any));
+	// Source: 
+	let xAxis = $derived(d3.axisBottom(xScale).tickFormat(d3.timeFormat('%b %Y') as any));
 	let yAxis = $derived(d3.axisLeft(yScale));
 
 	let xAxisRef: SVGGElement;
@@ -185,8 +186,14 @@
 
 	// Render axes when data loads
 	$effect(() => {
-		if (xAxisRef && data.length > 0) {
-			d3.select(xAxisRef).call(xAxis);
+		if (xAxisRef && data.length > 0) { // Slant the axis
+			d3.select(xAxisRef)
+				.call(xAxis)
+				.selectAll('text')
+				.attr('transform', 'rotate(-45)')
+				.style('text-anchor', 'end')
+				.attr('dx', '-.8em')
+				.attr('dy', '.15em');
 		}
 	});
 
