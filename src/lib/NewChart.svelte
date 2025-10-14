@@ -373,6 +373,7 @@
 	.comparison-box {
 		background: #f8f9fa;
 		padding: 25px;
+		padding-top: 0px;
 		border-radius: 8px;
 		border: 1px solid #e0e0e0;
 		margin-top: 30px;
