@@ -3,25 +3,28 @@
 [add overview here]
 [add deployment URL]
 
-## How to Run Locally
-### Prerequisites
+
+## Installation
+Follow these steps to set up the project locally:
+
+1. **Prerequisites**
 - Node.js (v18 or higher)
 - npm
 
-### Installation
+2. **Clone the repository**
 ```bash
-# Clone the repository
 git clone https://github.com/anissakp/pittsburgh-air-quality-viz.git
 cd pittsburgh-air-quality-viz
-
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
 ```
 
-Open `http://localhost:5173` in your browser.
+3. **Install Dependencies at Root Directory**
+```bash
+npm install
+```
+
+4. **Start development server**
+```bash
+npm run dev
 
 ## Visualizations
 
