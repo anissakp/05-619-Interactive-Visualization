@@ -226,6 +226,7 @@
 </label>
 
 <!-- Display filtered record count -->
+<!-- svelte-ignore a11y_label_has_associated_control -->
 <label>
 	Number of Records: {filteredData.length}
 </label>
@@ -309,7 +310,7 @@
 					justify-content: center;
 					background-color: {level.color}80; 
 					padding: 12px 20px; 
-					border-radius: 12px;
+					border-radius: 8px;
 					min-width: 120px;
 				"
 			>
@@ -329,12 +330,12 @@
 	
 	svg {
 		border: 1px solid #e0e0e0;
-		border-radius: 4px;
+		border-radius: 8px;
 	}
 	
 	select {
 		border: 1px solid #ccc;
-		border-radius: 4px;
+		border-radius: 8px;
 		font-size: 14px;
 	}
 	

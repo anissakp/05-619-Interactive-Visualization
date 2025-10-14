@@ -1,6 +1,6 @@
 <script lang="ts">
 	import AQIChart from '$lib/AQIChart.svelte';
-	import MapChart from '$lib/MapChart.svelte';
+	import NewChart from '$lib/NewChart.svelte';
 	import * as d3 from 'd3';
 
 	// DATA SOURCES
@@ -49,14 +49,14 @@
 	<p>loading data...</p>
 {:then data}
 	<!-- promise was fulfilled or not a Promise -->
-	<h2>AQI Chart</h2>
+	<h2>Monthly Air Quality Trends by Station</h2>
 	<AQIChart {data} />
 
 	<br>
 	<br>
 
-	<h2>Map Chart</h2>              
-	<MapChart {data} />                   
+	<h2>Air Quality Rankings and Comparison</h2>              
+	<NewChart {data} />                   
 
 {:catch error}
 	<!-- promise was rejected -->
