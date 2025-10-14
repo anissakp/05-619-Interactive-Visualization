@@ -1,8 +1,9 @@
 # Interactive Visualization
 
-[add overview here]
-[add deployment URL]
+This project was completed as part of Carnegie Mellon University’s 05-619: Data Visualization course. Its goal was to gain familiarity with implementing interactive visualization techniques using Svelte and D3, while evaluating how effective these techniques are within a chosen data domain. In this case, air quality data across Pittsburgh-area monitoring stations.
 
+**Deployment URL**
+[add deployment URL]
 
 ## Installation and Usage
 Follow these steps to set up the project locally:
