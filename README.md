@@ -7,22 +7,18 @@
 ## Installation
 Follow these steps to set up the project locally:
 
-1. **Prerequisites**
-- Node.js (v18 or higher)
-- npm
-
-2. **Clone the repository**
+1. **Clone the repository**
 ```bash
 git clone https://github.com/anissakp/pittsburgh-air-quality-viz.git
 cd pittsburgh-air-quality-viz
 ```
 
-3. **Install Dependencies at Root Directory**
+2. **Install Dependencies at Root Directory**
 ```bash
 npm install
 ```
 
-4. **Start development server**
+3. **Start development server**
 ```bash
 npm run dev
 
