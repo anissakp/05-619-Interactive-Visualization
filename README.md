@@ -14,7 +14,7 @@ git clone https://github.com/anissakp/Pittsburgh-Air-Quality-Visualizations.git
 
 2. **Install Dependencies at Root Directory**
 ```bash
-cd pittsburgh-air-quality-viz
+cd Pittsburgh-Air-Quality-Visualizations
 npm install
 ```
 
