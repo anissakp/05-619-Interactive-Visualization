@@ -285,7 +285,7 @@
 <div class="legends-container">
 	<!-- AQI Level Legend -->
 	<div class="legend-section">
-		<h4>US AQI Levels</h4>
+		<h4>Air Quality Index Levels</h4>
 		{#each aqiLevels as level}
 			<div class="legend-item">
 				<div class="legend-color" style="background-color: {level.color};"></div>

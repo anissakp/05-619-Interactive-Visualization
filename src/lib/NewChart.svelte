@@ -20,11 +20,11 @@
 	// STATE
 	let selectedStations = $state<string[]>([]);
 
-	// AQI categories 
+	// AQI categories
 	const aqiCategories = [
 		{ name: 'Good', min: 0, max: 50, color: '#9cd84e' },
 		{ name: 'Moderate', min: 51, max: 100, color: '#facf39' },
-		{ name: 'Unhealthy for Sensitive Groups', min: 101, max: 150, color: '#f99049' },
+		{ name: 'Unhealthy for Sensitive Groups', min: 101, max: 150, color: '#f99049' }
 	];
 
 	function getCategory(aqi: number) {
@@ -84,75 +84,91 @@
 	<!-- INTRO BOX -->
 	<!-- svelte-ignore a11y_label_has_associated_control -->
 	<p>
-		Goal: Find the best neighborhood for people with asthma or respiratory issues.
-	</p>
-	<p>
-		How to use: Click on any neighborhood bar to see details. Click two neighborhoods
-		to compare side-by-side!
+		Find the best neighborhood for people with asthma or respiratory issues.
+		<br />
+		Click on any neighborhood bar to see details. Click two neighborhoods to compare side-by-side.
 	</p>
 
 	<!-- RANKINGS -->
 	<h4>Rankings: Click to Select (up to 2 for comparison)</h4>
 
-	{#each stationStats as station, index}
-		{@const isSelected = selectedStations.includes(station.station)}
+	<div class="rankings-wrapper">
+		<div class="rankings-list">
+			{#each stationStats as station, index}
+				{@const isSelected = selectedStations.includes(station.station)}
 
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<!-- svelte-ignore a11y_no_static_element_interactions -->
-		<div
-			class="ranking-item"
-			class:selected={isSelected}
-			onclick={() => toggleStation(station.station)}
-		>
-			<div class="ranking-content">
-				<div class="rank-number">
-					{index + 1}
-				</div>
-
-				<div class="station-info">
-					<div class="station-name">{station.station}</div>
-
-					<!-- Bar Chart -->
-					<div class="bar-container">
-						<div
-							class="bar-segment bar-good"
-							style="width: {station.goodPercent}%"
-							title="{station.goodDays} good days"
-						>
-							{#if station.goodPercent > 10}
-								{station.goodPercent.toFixed(0)}%
-							{/if}
+				<!-- svelte-ignore a11y_click_events_have_key_events -->
+				<!-- svelte-ignore a11y_no_static_element_interactions -->
+				<div
+					class="ranking-item"
+					class:selected={isSelected}
+					onclick={() => toggleStation(station.station)}
+				>
+					<div class="ranking-content">
+						<div class="rank-number">
+							{index + 1}
 						</div>
-						<div
-							class="bar-segment bar-moderate"
-							style="width: {station.moderatePercent}%"
-							title="{station.moderateDays} moderate days"
-						>
-							{#if station.moderatePercent > 10}
-								{station.moderatePercent.toFixed(0)}%
-							{/if}
-						</div>
-						<div
-							class="bar-segment bar-unhealthy"
-							style="width: {station.unhealthyPercent}%"
-							title="{station.unhealthyDays} unhealthy days"
-						>
-							{#if station.unhealthyPercent > 10}
-								{station.unhealthyPercent.toFixed(0)}%
-							{/if}
+
+						<div class="station-info">
+							<div class="station-name">{station.station}</div>
+
+							<!-- Bar Chart -->
+							<div class="bar-container">
+								<div
+									class="bar-segment bar-good"
+									style="width: {station.goodPercent}%"
+									title="{station.goodDays} good days"
+								>
+									{#if station.goodPercent > 10}
+										{station.goodPercent.toFixed(0)}%
+									{/if}
+								</div>
+								<div
+									class="bar-segment bar-moderate"
+									style="width: {station.moderatePercent}%"
+									title="{station.moderateDays} moderate days"
+								>
+									{#if station.moderatePercent > 10}
+										{station.moderatePercent.toFixed(0)}%
+									{/if}
+								</div>
+								<div
+									class="bar-segment bar-unhealthy"
+									style="width: {station.unhealthyPercent}%"
+									title="{station.unhealthyDays} unhealthy days"
+								>
+									{#if station.unhealthyPercent > 10}
+										{station.unhealthyPercent.toFixed(0)}%
+									{/if}
+								</div>
+							</div>
+
+							<!-- Stats -->
+							<div class="station-stats">
+								<span>Avg AQI: <strong>{station.avgAqi.toFixed(0)}</strong></span>
+								<span>Good Days: <strong>{station.goodDays}</strong></span>
+								<span>Unhealthy Days: <strong>{station.unhealthyDays}</strong></span>
+							</div>
 						</div>
 					</div>
-
-					<!-- Stats -->
-					<div class="station-stats">
-						<span>Avg AQI: <strong>{station.avgAqi.toFixed(0)}</strong></span>
-						<span>Good Days: <strong>{station.goodDays}</strong></span>
-						<span>Unhealthy Days: <strong>{station.unhealthyDays}</strong></span>
-					</div>
 				</div>
-			</div>
+			{/each}
 		</div>
-	{/each}
+
+		<!-- ✅ Right side: legend -->
+		<div class="legend-section">
+			<h4>Air Quality Index Levels</h4>
+			{#each aqiCategories as cat}
+				<div class="legend-item-new">
+					<div class="legend-color" style="background-color: {cat.color}"></div>
+					<div class="legend-text">
+						<div class="legend-name">{cat.name}</div>
+						<div class="legend-range">{cat.min}–{cat.max}</div>
+					</div>
+				</div>
+			{/each}
+		</div>
+	</div>
 
 	<!-- COMPARISON VIEW -->
 	{#if selectedStationData.length > 0}
@@ -253,32 +269,21 @@
 			{/if}
 		</div>
 	{/if}
-
-	<!-- LEGEND -->
-	<h4 style="margin-top: 30px">What the Colors Mean</h4>
-	<div class="legend-grid">
-		{#each aqiCategories as cat}
-			<div class="legend-item" style="background: {cat.color}30;">
-				<div style="font-size: 16px; font-weight: bold; margin-bottom: 5px">
-					{cat.name}
-				</div>
-				<div style="font-size: 14px; color: #666">
-					{cat.min}-{cat.max ?? '301+'} AQI
-				</div>
-			</div>
-		{/each}
-	</div>
 </div>
 
 <style>
 	* {
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 	}
 
 	p {
 		font-size: 14px;
 		display: flex;
 		align-items: center;
+	}
+
+	.container {
+		max-width: 1040px;
 	}
 
 	.ranking-item {
@@ -450,15 +455,56 @@
 		margin-top: 20px;
 	}
 
-	.legend-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		gap: 15px;
-		margin-top: 15px;
+	.rankings-wrapper {
+		display: flex;
+		gap: 30px;
+		align-items: flex-start;
 	}
 
-	.legend-item {
-		padding: 15px;
-		border-radius: 8px;
+	.rankings-list {
+		flex: 1;
+	}
+
+	.legend-section {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+	}
+
+	.legend-section h4 {
+		font-size: 14px;
+		margin: 0 0 5px 0;
+		color: #333;
+	}
+
+	.legend-item-new {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-size: 12px;
+	}
+
+	.legend-color {
+		width: 20px;
+		height: 20px;
+		border-radius: 4px;
+		flex-shrink: 0;
+		opacity: 0.5;
+	}
+
+	.legend-name {
+		color: #333;
+		line-height: 1.1;
+	}
+
+	.legend-range {
+		font-size: 10px;
+		color: #666;
+	}
+
+	.legend-text {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
 	}
 </style>
