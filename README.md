@@ -24,6 +24,21 @@ npm install
 npm run dev
 ```
 
+## Design Rationale
+When approaching this assignment, I began by referencing Professor Moritz’s GitHub repositories from our in-class live coding sessions (e.g., FullSVGBarChart.svelte) and previous lab assignments. These examples helped me understand Svelte’s reactivity model and how to structure visualizations using SVGs and D3 scales.
+
+**Visual Encodings**
+For my first visualization (AQIChart.svelte), I used:
+- 
+
+For my second visualization (RankCompareChart.svelte), I used:
+- 
+
+**Interaction Techniques**
+- 
+
+
+
 ## Technologies Used
 - Svelte 5 - UI framework
 - D3.js - Data visualization library
