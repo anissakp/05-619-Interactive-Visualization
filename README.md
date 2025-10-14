@@ -21,6 +21,9 @@ npm install
 3. **Start development server**
 ```bash
 npm run dev
+```
+
+
 
 ## Visualizations
 
@@ -47,7 +50,6 @@ An interactive ranking visualization that allows users to compare air quality ac
 - usa_pennsylvania_pittsburgh: https://dig.cmu.edu/datavis-fall-2025/assignments/data/%5BUSA-Pennsylvania-Pittsburgh%5D_daily-avg.csv
 
 ## Technologies Used
-
 - **Svelte 5** - UI framework
 - **D3.js** - Data visualization library
 - **TypeScript** - Type safety
