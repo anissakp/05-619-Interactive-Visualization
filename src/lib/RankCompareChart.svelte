@@ -1,4 +1,4 @@
-<!-- src/lib/NewChart.svelte -->
+<!-- src/lib/RankCompareChart.svelte -->
 <script lang="ts">
 	import * as d3 from 'd3';
 
