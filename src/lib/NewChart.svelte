@@ -66,6 +66,7 @@
 	);
 
 	// HELPER FUNCTIONS
+	// Toggle station selection (max 2 stations for comparison)
 	function toggleStation(station: string) {
 		if (selectedStations.includes(station)) {
 			selectedStations = selectedStations.filter((s) => s !== station);
@@ -81,7 +82,6 @@
 
 <!-- MAIN CONTAINER -->
 <div class="container">
-	<!-- INTRO BOX -->
 	<!-- svelte-ignore a11y_label_has_associated_control -->
 	<p>
 		Find the best neighborhood for people with asthma or respiratory issues.
@@ -113,6 +113,7 @@
 							<div class="station-name">{station.station}</div>
 
 							<!-- Bar Chart -->
+							<!-- Displays percentage distribution of AQI categories -->
 							<div class="bar-container">
 								<div
 									class="bar-segment bar-good"
@@ -144,6 +145,7 @@
 							</div>
 
 							<!-- Stats -->
+							<!-- Summary metrics for each station -->
 							<div class="station-stats">
 								<span>Avg AQI: <strong>{station.avgAqi.toFixed(0)}</strong></span>
 								<span>Good Days: <strong>{station.goodDays}</strong></span>
@@ -155,7 +157,7 @@
 			{/each}
 		</div>
 
-		<!-- ✅ Right side: legend -->
+		<!-- Right side: legend -->
 		<div class="legend-section">
 			<h4>Air Quality Index Levels</h4>
 			{#each aqiCategories as cat}
@@ -171,6 +173,7 @@
 	</div>
 
 	<!-- COMPARISON VIEW -->
+	<!-- Detailed side-by-side comparison when stations are selected -->
 	{#if selectedStationData.length > 0}
 		<div class="comparison-box">
 			<h4>
@@ -182,6 +185,7 @@
 
 			<div class="comparison-grid" class:single={selectedStationData.length === 1}>
 				{#each selectedStationData as station}
+					<!-- Categorize stations based on percentage of good air days -->
 					{@const recClass =
 						station.goodPercent > 60
 							? 'excellent'
@@ -250,6 +254,7 @@
 				{/each}
 			</div>
 
+			<!-- Head-to-head comparison when exactly 2 stations are selected -->
 			{#if selectedStationData.length === 2}
 				{@const better =
 					selectedStationData[0].goodPercent > selectedStationData[1].goodPercent
@@ -272,6 +277,7 @@
 </div>
 
 <style>
+	/* Global font styling */
 	* {
 		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 	}
