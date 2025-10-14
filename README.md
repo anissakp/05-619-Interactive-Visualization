@@ -10,11 +10,11 @@ Follow these steps to set up the project locally:
 1. **Clone the repository**
 ```bash
 git clone https://github.com/anissakp/pittsburgh-air-quality-viz.git
-cd pittsburgh-air-quality-viz
 ```
 
 2. **Install Dependencies at Root Directory**
 ```bash
+cd pittsburgh-air-quality-viz
 npm install
 ```
 
