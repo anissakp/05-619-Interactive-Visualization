@@ -9,7 +9,7 @@ Follow these steps to set up the project locally:
 
 1. **Clone the Repository**
 ```bash
-git clone https://github.com/anissakp/pittsburgh-air-quality-viz.git
+git clone https://github.com/anissakp/Pittsburgh-Air-Quality-Visualizations.git
 ```
 
 2. **Install Dependencies at Root Directory**
