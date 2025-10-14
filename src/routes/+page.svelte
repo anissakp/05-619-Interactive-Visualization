@@ -1,6 +1,6 @@
 <script lang="ts">
 	import AQIChart from '$lib/AQIChart.svelte';
-	import MapChart from '$lib/MapChart.svelte';
+	import StationDashboard from '$lib/StationDashboard.svelte';
 	import * as d3 from 'd3';
 
 	// DATA SOURCES
@@ -55,8 +55,8 @@
 	<br>
 	<br>
 
-	<h2>Map Chart</h2>              
-	<MapChart {data} />                   
+	<h2>Station Dashboard</h2>
+	<StationDashboard {data} />                
 
 {:catch error}
 	<!-- promise was rejected -->
