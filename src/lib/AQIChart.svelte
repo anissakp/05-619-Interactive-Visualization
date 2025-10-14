@@ -233,6 +233,7 @@
 
 <br />
 
+<div class="chart-wrapper">
 <svg {width} {height}>
 	<!-- AQI level background bands -->
 	{#each aqiLevels as level}
@@ -279,48 +280,38 @@
 	<g class="y-axis" transform="translate({margin.left},0)" bind:this={yAxisRef}></g>
 </svg>
 
+
 <!-- LEGENDS -->
-
-<!-- Station Legend (only visible when showing all stations) -->
-{#if !selectedStation}
-	<div style="margin-top: 20px;">
-		<div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px;">
-			<label style="margin-right: 10px;">Stations</label>
-			{#each stationCounts as station}
-				<div style="display: flex; align-items: center; gap: 5px;">
-					<div
-						style="width: 20px; height: 3px; background-color: {colorScale(station.name)};"
-					></div>
-					<span style="font-size: 14px;">{station.name}</span>
-				</div>
-			{/each}
-		</div>
-	</div>
-{/if}
-
-<!-- AQI Level Legend (always visible) -->
-<div style="margin-top: 20px;">
-	<div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
-		<label style="margin-right: 10px;">US AQI</label>
+<div class="legends-container">
+	<!-- AQI Level Legend -->
+	<div class="legend-section">
+		<h4>US AQI Levels</h4>
 		{#each aqiLevels as level}
-			<div
-				style="
-					display: flex; 
-					align-items: center; 
-					justify-content: center;
-					background-color: {level.color}80; 
-					padding: 12px 20px; 
-					border-radius: 8px;
-					min-width: 120px;
-				"
-			>
-				<div style="text-align: center">
-					<div style="font-size: 13px; line-height: 1.3;">{level.name}</div>
-					<div style="font-size: 12px;">{level.min}-{level.max ?? '301+'}</div>
+			<div class="legend-item">
+				<div class="legend-color" style="background-color: {level.color};"></div>
+				<div class="legend-text">
+					<div class="legend-name">{level.name}</div>
+					<div class="legend-range">{level.min}-{level.max ?? '301+'}</div>
 				</div>
 			</div>
 		{/each}
 	</div>
+
+	<!-- Station Legend (only visible when showing all stations) -->
+	{#if !selectedStation}
+		<div class="legend-section">
+			<h4>Stations</h4>
+			{#each stationCounts as station}
+				<div class="legend-item">
+					<div class="legend-line" style="background-color: {colorScale(station.name)};"></div>
+					<div class="legend-text">
+						<div class="legend-name">{station.name}</div>
+					</div>
+				</div>
+			{/each}
+		</div>
+	{/if}
+</div>
 </div>
 
 <style>
@@ -344,5 +335,69 @@
 		display: flex;
 		align-items: center;
 		padding-top: 5px;
+	}
+
+	.chart-wrapper {
+		display: flex;
+		gap: 30px;
+		align-items: flex-start;
+	}
+
+	.legends-container {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		min-width: 200px;
+		max-height: 400px;
+	}
+
+	.legend-section {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+	}
+
+	.legend-section h4 {
+		font-size: 14px;
+		margin: 0 0 5px 0;
+		color: #333;
+	}
+
+	.legend-item {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-size: 12px;
+	}
+
+	.legend-color {
+		width: 20px;
+		height: 20px;
+		border-radius: 4px;
+		flex-shrink: 0;
+		opacity: 0.5;
+	}
+
+	.legend-line {
+		width: 20px;
+		height: 3px;
+		border-radius: 2px;
+		flex-shrink: 0;
+	}
+
+	.legend-text {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	.legend-name {
+		color: #333;
+		line-height: 1.1;
+	}
+
+	.legend-range {
+		font-size: 10px;
+		color: #666;
 	}
 </style>
