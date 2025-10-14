@@ -18,7 +18,7 @@ cd pittsburgh-air-quality-viz
 npm install
 ```
 
-3. **Start development server**
+3. **Start Development Server**
 ```bash
 npm run dev
 ```
