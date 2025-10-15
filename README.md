@@ -28,10 +28,3 @@ npm run dev
 When approaching this assignment, I began by referencing Professor Moritz’s GitHub repositories from our in-class live coding sessions (e.g., FullSVGBarChart.svelte) and previous lab assignments. These examples helped me understand Svelte’s reactivity model and how to structure visualizations using SVGs and D3 scales.
 
 
-
-
-## Technologies Used
-- Svelte 5 - UI framework
-- D3.js - Data visualization library
-- TypeScript - Type safety
-- Vite - Build tool
