@@ -34,7 +34,7 @@ Interactive features include a dropdown to choose stations, a checkbox to toggle
 
 The visualization took approximately **15-20 hours** to complete. 
 
-### Visualization 2: AQIRank.svelte
+### Visualization 2: RankCompareChart.svelte
 Initially, I explored a map-based visualization to show how air quality changes across Pittsburgh over time. My plan was to plot circles on a city map, sized by PM2.5 values, colored by AQI level, with tooltips on hover. However, the cities in the dataset weren’t spread out enough for the map to be clear or effective. I also considered an interactive dashboard showing all eight counties to make it easier to compare stations, but this approach proved difficult to read and didn’t clearly answer a specific question.
 
 This prompted a shift toward the question: **Which Pittsburgh neighborhoods have the best air quality for individuals with respiratory conditions such as asthma?** To answer this, stations are ranked by the percentage of “good air” days (a metric closely tied to daily quality of life). Each neighborhood is shown as a stacked horizontal bar representing the proportion of days in each AQI category, ordered by rank and colored consistently with the time-series chart.
