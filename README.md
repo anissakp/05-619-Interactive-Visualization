@@ -41,7 +41,7 @@ This prompted a shift toward the question: **Which Pittsburgh neighborhoods have
 
 Users can compare up to two stations side by side, with a panel displaying average and median AQI, the worst recorded day, total data days, category breakdowns, and qualitative ratings (excellent/acceptable/poor).
 
-These design decisions were made to make the data easier to interpret at a glance, highlight meaningful differences between neighborhoods, and support both broad exploration and focused comparison.
+These design decisions were guided by peer feedback and aimed to make the data easier to interpret at a glance, highlight meaningful differences between neighborhoods, and support both broad exploration and focused comparison.
 
 This process took approximately **20-25 hours** to complete.
 
