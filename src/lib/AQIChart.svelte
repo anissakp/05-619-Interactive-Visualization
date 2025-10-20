@@ -127,7 +127,7 @@
 	// SCALES
 
 	// X-axis: Time scale spanning all months in the dataset
-	// Source: Professor's GitHub Repo
+	// Source: Professor's GitHub Repo, FullSVGBarChart.svelte
 	let xScale = $derived(
 		d3
 			.scaleTime()
