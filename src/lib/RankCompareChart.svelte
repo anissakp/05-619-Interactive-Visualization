@@ -84,7 +84,7 @@
 <div class="container">
 	<!-- svelte-ignore a11y_label_has_associated_control -->
 	<p>
-		Find the best neighborhood for people with asthma or respiratory issues.
+		Find the best neighborhood for people with respiratory issues such as asthma.
 		<br />
 		Click on any neighborhood bar to see details. Click two neighborhoods to compare side-by-side.
 	</p>
