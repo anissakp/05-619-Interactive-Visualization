@@ -2,8 +2,8 @@
 
 This project was completed as part of Carnegie Mellon University’s 05-619: Data Visualization course. Its goal was to gain familiarity with implementing interactive visualization techniques using **Svelte and D3**, while evaluating how effective these techniques are within a chosen data domain. In this case, air quality data across Pittsburgh-area monitoring stations.
 
-**Deployed Link**
-[add deployment URL]
+[**Deployed Page**](https://anissakp.github.io/Pittsburgh-Air-Quality-Visualizations/)
+ 
 
 ## Installation and Usage
 Follow these steps to set up the project locally:
@@ -37,11 +37,11 @@ The visualization took approximately **15-20 hours** to complete.
 ### Visualization 2: AQIRank.svelte
 Initially, I explored a map-based visualization to show how air quality changes across Pittsburgh over time. My plan was to plot circles on a city map, sized by PM2.5 values, colored by AQI level, with tooltips on hover. However, the cities in the dataset weren’t spread out enough for the map to be clear or effective. I also considered an interactive dashboard showing all eight counties to make it easier to compare stations, but this approach proved difficult to read and didn’t clearly answer a specific question.
 
-This prompted a shift toward the **question**: Which Pittsburgh neighborhoods have the best air quality for individuals with respiratory conditions such as asthma?
+This prompted a shift toward the question: **Which Pittsburgh neighborhoods have the best air quality for individuals with respiratory conditions such as asthma?** To answer this, stations are ranked by the percentage of “good air” days (a metric closely tied to daily quality of life). Each neighborhood is shown as a stacked horizontal bar representing the proportion of days in each AQI category, ordered by rank and colored consistently with the time-series chart.
 
-To answer this, stations are ranked by the percentage of “good air” days (a metric closely tied to daily quality of life). Each neighborhood is shown as a stacked horizontal bar representing the proportion of days in each AQI category, ordered by rank and colored consistently with the time-series chart.
+Users can compare up to two stations side by side, with a panel displaying average and median AQI, the worst recorded day, total data days, category breakdowns, and qualitative ratings (excellent/acceptable/poor).
 
-Users can compare up to two stations side by side, with a panel displaying average and median AQI, the worst recorded day, total data days, category breakdowns, and qualitative ratings (excellent/acceptable/poor). 
+These design decisions were made to make the data easier to interpret at a glance, highlight meaningful differences between neighborhoods, and support both broad exploration and focused comparison.
 
 This process took approximately **20-25 hours** to complete.
 
