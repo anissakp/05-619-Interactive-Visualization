@@ -2,7 +2,7 @@
 
 This project was completed as part of Carnegie Mellon University’s 05-619: Data Visualization course. Its goal was to gain familiarity with implementing interactive visualization techniques using **Svelte and D3**, while evaluating how effective these techniques are within a chosen data domain. In this case, air quality data across Pittsburgh-area monitoring stations.
 
-[**Deployed Link**](https://anissakp.github.io/Pittsburgh-Air-Quality-Visualizations/)
+[**Deployed Page**](https://anissakp.github.io/Pittsburgh-Air-Quality-Visualizations/)
  
 
 ## Installation and Usage
