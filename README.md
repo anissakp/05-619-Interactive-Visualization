@@ -45,7 +45,7 @@ These design decisions were guided by peer feedback and aimed to make the data e
 
 This process took approximately **20-25 hours** to complete.
 
-### Most Time-Consuming Aspects
+### Time-Consuming Aspects
 The most time-consuming part of the project was learning how to work with Svelte and D3. Both have extensive documentation and multiple ways to accomplish the same task, so a lot of effort went into figuring out the most concise and reliable approach. Styling also took time, as I spent a lot of trial and error making the charts, legends, and tooltips visually consistent and easy to interpret.
 
 ### Use of AI
