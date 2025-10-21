@@ -25,7 +25,7 @@ npm run dev
 ```
 
 ## My Process
-The project began by reviewing previous lab assignments and examples from Professor Moritz’s GitHub repository (e.g., FullSVGBarChart.svelte), which helped develop an understanding of Svelte and D3. Using these tools, I developed **interactive visualizations** that display how air quality differs across Pittsburgh’s neighborhoods and highlights areas with the cleanest air.
+The project began by reviewing documentation, previous lab assignments and examples from Professor Moritz’s GitHub repository (e.g., FullSVGBarChart.svelte), which helped develop an understanding of Svelte and D3. Using these tools, I developed **interactive visualizations** that display how air quality differs across Pittsburgh’s neighborhoods and highlights areas with the cleanest air.
 
 ### Visualization 1: AQIChart.svelte
 This visualization lets users explore how air quality changes over time across Pittsburgh’s neighborhoods. Monthly average AQI values are shown as a line chart, with D3’s categorical color scale distinguishing each neighborhood. Background color bands represent EPA-defined AQI levels (Good → Hazardous) at 50% opacity for easy reference. When a single station is selected, a shaded 10th-90th percentile band highlights daily variability.
