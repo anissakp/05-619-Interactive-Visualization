@@ -49,4 +49,4 @@ This process took approximately **20-25 hours** to complete.
 The most time-consuming part of the project was learning how to work with Svelte and D3. Both have extensive documentation and multiple ways to accomplish the same task, so a lot of effort went into figuring out the most concise and reliable approach. Styling also took time, as I spent a lot of trial and error making the charts, legends, and tooltips visually consistent and easy to interpret.
 
 ### Use of AI
-I used **Claude by Anthropic** for clarifying confusing documentation, providing code examples based on documentation, troubleshooting D3-Svelte integration issues, resolving TypeScript errors, and refining HTML/CSS styling. A list of prompts can be found here. 
+I used **Claude by Anthropic** for clarifying confusing documentation, providing code examples based on documentation, troubleshooting D3-Svelte integration issues, resolving TypeScript errors, and refining HTML/CSS styling. A list of prompts can be found [here](https://docs.google.com/document/d/1w87suoM4mSlgYm6N0GRMHfO1Oxfd-s1sPFTZwZDKDPE/edit?usp=sharing). 
