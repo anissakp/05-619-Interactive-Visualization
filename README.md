@@ -32,16 +32,16 @@ This visualization lets users explore how air quality changes over time across P
 
 Interactive features include a dropdown to choose stations, a checkbox to toggle raw daily data, and a fixed legend for clarity. Together, these elements help users move smoothly between overview and detail without losing context.
 
-The visualization took approximately **15-20 hours** to complete. 
+This visualization took approximately **15-20 hours** to complete. 
 
 ### Visualization 2: RankCompareChart.svelte
-Initially, I explored a map-based visualization to show how air quality changes across Pittsburgh over time. My plan was to plot circles on a city map, sized by PM2.5 values, colored by AQI level, with tooltips on hover. However, the cities in the dataset weren’t spread out enough for the map to be clear or effective. I also considered an interactive dashboard showing all eight counties to make it easier to compare stations, but this approach proved difficult to read and didn’t clearly answer a specific question.
+Initially, I explored a map-based visualization to show how air quality changes across Pittsburgh over time. My plan was to plot circles on a city map, sized by PM2.5 values, colored by AQI level, with tooltips on hover. However, the cities in the dataset weren’t spread out enough for the map to be clear or effective. I also considered an interactive dashboard showing all eight counties to make it easier to compare stations, but this approach was difficult to read and didn’t clearly answer a specific question.
 
 This prompted a shift toward the question: **Which Pittsburgh neighborhoods have the best air quality for individuals with respiratory conditions such as asthma?** To answer this, stations are ranked by the percentage of “good air” days (a metric closely tied to daily quality of life). Each neighborhood is shown as a stacked horizontal bar representing the proportion of days in each AQI category, ordered by rank and colored consistently with the time-series chart.
 
 Users can compare up to two stations side by side, with a panel displaying average and median AQI, the worst recorded day, total data days, category breakdowns, and qualitative ratings (excellent/acceptable/poor).
 
-These design decisions were guided by peer feedback and aimed to make the data easier to interpret at a glance, highlight meaningful differences between neighborhoods, and support both broad exploration and focused comparison.
+These design decisions were guided by peer feedback and aimed to make the data easier to interpret at a glance, show meaningful differences between neighborhoods, and support both broad exploration and focused comparison.
 
 This process took approximately **20-25 hours** to complete.
 
