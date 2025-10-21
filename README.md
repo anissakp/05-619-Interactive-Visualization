@@ -30,7 +30,7 @@ The project began by reviewing documentation, previous lab assignments and examp
 ### Visualization 1: AQIChart.svelte
 This visualization lets users explore how air quality changes over time across Pittsburgh’s neighborhoods. Monthly average AQI values are shown as a line chart, with D3’s categorical color scale distinguishing each neighborhood. Background color bands represent EPA-defined AQI levels (Good → Hazardous) at 50% opacity for easy reference. When a single station is selected, a shaded 10th-90th percentile band highlights daily variability.
 
-Interactive features include a dropdown to choose stations, a checkbox to toggle raw daily data, and a fixed legend for clarity. Together, these elements help users move smoothly between overview and detail without losing context.
+Interactive features include a dropdown to choose stations, a checkbox to toggle raw daily data, and a fixed legend for clarity. These elements help users move smoothly between overview and detail without losing context.
 
 This visualization took approximately **15-20 hours** to complete. 
 
