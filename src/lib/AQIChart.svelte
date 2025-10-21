@@ -177,7 +177,6 @@
 	// AXES
 
 	// Source: Professor's GitHub Repo, FullSVGBarChart.svelte
-	// Source: 
 	let xAxis = $derived(d3.axisBottom(xScale).tickFormat(d3.timeFormat('%b %Y') as any));
 	let yAxis = $derived(d3.axisLeft(yScale));
 
